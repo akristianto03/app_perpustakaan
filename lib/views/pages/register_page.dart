@@ -53,6 +53,13 @@ class RegisterPage extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
+                  TextInputPasswordField(
+                      controller: registerVM.ctrlRePassword,
+                      error: "Kata sandi harus memiliki 8 karakter atau lebih",
+                      hint: "Konfirmasi Kata Sandi"),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   const SizedBox(
                     width: double.infinity,
                     child: Text(

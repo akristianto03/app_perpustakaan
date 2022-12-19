@@ -1,15 +1,15 @@
 part of 'widgets.dart';
 
+// ignore: must_be_immutable
 class BookModule extends StatelessWidget {
-  const BookModule({
-    Key? key,
-  }) : super(key: key);
+  Book book;
+  BookModule({Key? key, required this.book}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(BookDetail());
+        Get.to(BookDetail(book: book, isPinjam: false));
       },
       child: Column(
         children: [
@@ -17,9 +17,8 @@ class BookModule extends StatelessWidget {
             width: 184,
             height: 264,
             decoration: BoxDecoration(
-                image: const DecorationImage(
-                    image: NetworkImage(
-                        'https://i.pinimg.com/564x/bc/be/e6/bcbee64cb478a5dcf676001b8d0bc204.jpg'),
+                image: DecorationImage(
+                    image: NetworkImage('${Const.baseUrl}/${book.img}'),
                     fit: BoxFit.cover),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
@@ -36,7 +35,7 @@ class BookModule extends StatelessWidget {
           SizedBox(
             width: 184,
             child: Text(
-              "judul buku sangat panjang",
+              book.judul,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
               maxLines: 2,

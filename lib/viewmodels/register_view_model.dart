@@ -26,6 +26,7 @@ class RegisterViewModel extends GetxController with StateMixin {
               ctrlRePassword.text, ctrlisAdmin.value)
           .then((value) {
         if (value['status'] == true) {
+          Get.snackbar("Berhasil", "Akun berhasil dibuat");
           Get.offAllNamed(RouteName.login);
         } else {
           change(null, status: RxStatus.success());

@@ -8,6 +8,17 @@ class TabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    tabBarVM.refreshDataUser();
+                  },
+                  icon: const Icon(Icons.refresh))
+            ],
+          ),
           body: Center(
               child: tabBarVM.widgetOption
                   .elementAt(tabBarVM.selectedIndex.value)),
@@ -32,7 +43,42 @@ class TabBar extends StatelessWidget {
                   label: "Buku")
             ],
           ),
-          drawer: Drawer(),
+          drawer: Drawer(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              children: [
+                Icon(
+                  Icons.account_circle,
+                  size: 120,
+                  color: Colors.grey[400],
+                ),
+                Text(
+                  tabBarVM.user,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Divider(
+                  height: 2,
+                ),
+                ListTile(
+                  onTap: () async {
+                    tabBarVM.logout();
+                  },
+                  selectedColor: Colors.red,
+                  selected: true,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  leading: const Icon(Icons.exit_to_app),
+                  title: const Text(
+                    "Logout",
+                  ),
+                )
+              ],
+            ),
+          ),
         ));
   }
 }

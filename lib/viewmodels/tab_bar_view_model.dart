@@ -2,7 +2,7 @@ part of 'view_models.dart';
 
 class TaBBarViewModel extends GetxController {
   var selectedIndex = 0.obs;
-  Map<String, dynamic>? user;
+  String user = Get.arguments;
 
   List<Widget> widgetOption = [PinjamPage(), BookPage()];
 
@@ -10,12 +10,20 @@ class TaBBarViewModel extends GetxController {
     selectedIndex.value = index;
   }
 
-  @override
-  void onInit() async {
-    getUid();
-
-    super.onInit();
+  void refreshDataUser() async {
+    await AuthService.refreshData().then((value) {
+      if (value['statusUser'] == true) {
+        Get.offAllNamed(RouteName.tabBar, arguments: user);
+      }
+    });
   }
 
-  void getUid() async {}
+  void logout() async {
+    await AuthService.logout().then((value) {
+      if (value['status'] == true) {
+        Get.snackbar("Logout", "Logout berhasil");
+        Get.offAllNamed(RouteName.login);
+      }
+    });
+  }
 }

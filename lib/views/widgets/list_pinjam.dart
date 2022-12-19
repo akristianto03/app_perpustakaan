@@ -1,16 +1,18 @@
 part of 'widgets.dart';
 
+// ignore: must_be_immutable
 class ListPinjam extends StatelessWidget {
-  const ListPinjam({
-    Key? key,
-  }) : super(key: key);
+  dynamic pinjam;
+  VoidCallback press;
+  ListPinjam({Key? key, required this.pinjam, required this.press})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Get.bottomSheet(Container(
-          height: 140,
+          height: pinjam['status'] == 'menunggu konfirmasi' ? 140 : 100,
           padding: const EdgeInsets.all(16),
           color: Colors.white,
           child: GestureDetector(
@@ -22,7 +24,21 @@ class ListPinjam extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(BookDetail());
+                    Get.to(BookDetail(
+                      book: Book(
+                        pinjam['book']['id'],
+                        pinjam['book']['judul'],
+                        pinjam['book']['publikasi'],
+                        pinjam['book']['bahasa'],
+                        pinjam['book']['penulis'],
+                        pinjam['book']['penerbit'],
+                        pinjam['book']['halaman'],
+                        pinjam['book']['kategori'],
+                        pinjam['book']['deskripsi'],
+                        pinjam['book']['img'],
+                      ),
+                      isPinjam: true,
+                    ));
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,27 +54,35 @@ class ListPinjam extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
-                      Icon(
-                        Icons.close,
-                        color: Colors.red,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        "Batalkan peminjaman",
-                        style: TextStyle(color: Colors.red),
+                pinjam['status'] == 'menunggu konfirmasi'
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          GestureDetector(
+                            onTap: press,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: const [
+                                Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Batalkan peminjaman",
+                                  style: TextStyle(color: Colors.red),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
                       )
-                    ],
-                  ),
-                ),
+                    : Container()
               ],
             ),
           ),
@@ -85,30 +109,33 @@ class ListPinjam extends StatelessWidget {
               width: 46,
               height: 66,
               decoration: BoxDecoration(
-                  image: const DecorationImage(
+                  image: DecorationImage(
                       image: NetworkImage(
-                          'https://i.pinimg.com/564x/bc/be/e6/bcbee64cb478a5dcf676001b8d0bc204.jpg'),
+                          '${Const.baseUrl}/${pinjam['book']['img']}'),
                       fit: BoxFit.cover),
                   borderRadius: BorderRadius.circular(4)),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             SizedBox(
-              width: 100,
+              width: 150,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Judul",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    pinjam['book']['judul'],
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text("01/12 - 02/12")
+                  Text('${pinjam['tglPinjam']} - ${pinjam['tglKembali']}')
                 ],
               ),
             ),
             const Spacer(),
-            Text("Menunggu Konfirmasi")
+            Text(
+              pinjam['status'],
+              maxLines: 2,
+            )
           ],
         ),
       ),

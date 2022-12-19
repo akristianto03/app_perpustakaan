@@ -6,3 +6,4 @@ import 'package:http/http.dart' as http;
 import '../shared/shared.dart';
 part 'storage_manager.dart';
 part 'auth_service.dart';
+part 'book_service.dart';

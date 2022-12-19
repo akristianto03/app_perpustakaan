@@ -16,9 +16,11 @@ class LoginViewModel extends GetxController with StateMixin {
   void login() async {
     if (formKey.currentState!.validate()) {
       await AuthService.login(ctrlEmail.text, ctrlPassword.text).then((value) {
-        if (value['status'] = true) {
-          print(value);
-          Get.offAll(RouteName.tabBar);
+        if (value['status'] == true) {
+          Get.snackbar("Berhasil login", "Selamat datang ${value['name']}");
+          Get.offAllNamed(RouteName.tabBar, arguments: value['name']);
+        } else {
+          Get.snackbar("Login gagal", "Email atau password tidak sesuai");
         }
       });
     }

@@ -7,6 +7,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
+import '../../models/book.dart';
+
 part 'login_page.dart';
 part 'register_page.dart';
 part 'tab_bar.dart';
